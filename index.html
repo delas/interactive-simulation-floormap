@@ -83,6 +83,7 @@
 	width: 50px;
 	background: black;
 	border-radius: 50%;
+	z-index: 100;
 }
 
 </style>
@@ -90,14 +91,32 @@
 <script type="text/javascript">
 
 caseid = 1
+dragging = false
 
 function logger(room) {
 	console.log("case: " + caseid + " - activity: enter " + room)
-	console.log()
 }
 
 function newCase() {
 	caseid += 1
+}
+
+function startDragging(event) {
+	dragging = true
+}
+
+function stopDragging(event) {
+	dragging = false
+}
+
+function move(event) {
+	if (dragging) {
+		// console.log(event)
+		person = document.getElementById("person");
+		person.style.setProperty("left", event.x + "px")
+		person.style.setProperty("top", event.y + "px")
+		// console.log(person)
+	}
 }
 
 
@@ -105,8 +124,9 @@ function newCase() {
 <head>
 </head>
 <body>
-	<div class="map">
-		<div class="person"></div>
+	<div class="person" id="person"></div>
+	<div class="map" onmousedown="startDragging(event)" onmouseup="stopDragging(event)" onmousemove="move(event)">
+		
 		<div onmouseover="logger('bathroom')" class="overlayable bathroom"></div>
 		<div onmouseover="logger('bedroom')" class="overlayable bedroom"></div>
 		<div onmouseover="logger('kitchen')" class="overlayable kitchen"></div>
