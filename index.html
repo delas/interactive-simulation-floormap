@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+.map {
+  background: url(floormap.jpg) no-repeat;
+  height: 837px;
+  width: 927px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bathroom {
+	position: absolute;
+	top: 30px;
+	left: 173px;
+	width: 351px;
+	height: 291px;
+	background: white;
+	opacity: 0;
+}
+
+.bedroom {
+	position: absolute;
+	top: 30px;
+	left: 527px;
+	width: 352px;
+	height: 402px;
+	background: white;
+	opacity: 0;
+}
+
+.kitchen {
+	position: absolute;
+	top: 528px;
+	left: 44px;
+	width: 311px;
+	height: 280px;
+	background: white;
+	opacity: 0;
+}
+
+.entrance {
+	position: absolute;
+	top: 320px;
+	left: 82px;
+	width: 246px;
+	height: 206px;
+	background: white;
+	opacity: 0;
+}
+
+.computer {
+	position: absolute;
+	top: 328px;
+	left: 326px;
+	width: 170px;
+	height: 100px;
+	background: white;
+	opacity: 0;
+}
+
+.living {
+	position: absolute;
+	top: 440px;
+	left: 374px;
+	width: 383px;
+	height: 365px;
+	background: white;
+	opacity: 0;
+}
+
+.overlayable:hover {
+	opacity: 0.5;
+}
+
+.person {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 50px;
+	width: 50px;
+	background: black;
+	border-radius: 50%;
+}
+
+</style>
+
+<script type="text/javascript">
+
+caseid = 1
+
+function logger(room) {
+	console.log("case: " + caseid + " - activity: enter " + room)
+	console.log()
+}
+
+function newCase() {
+	caseid += 1
+}
+
+
+</script>
+<head>
+</head>
+<body>
+	<div class="map">
+		<div class="person"></div>
+		<div onmouseover="logger('bathroom')" class="overlayable bathroom"></div>
+		<div onmouseover="logger('bedroom')" class="overlayable bedroom"></div>
+		<div onmouseover="logger('kitchen')" class="overlayable kitchen"></div>
+		<div onmouseover="logger('entrance')" class="overlayable entrance"></div>
+		<div onmouseover="logger('computer')" class="overlayable computer"></div>
+		<div onmouseover="logger('living')" class="overlayable living"></div>
+	</div>
+	<button onclick="newCase()">New day</button>
+</body>
+</html>
