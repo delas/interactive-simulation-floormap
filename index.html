@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style type="text/css">
 .map {
   background: url(floormap2.jpg) no-repeat;
@@ -104,6 +105,9 @@ interact('.person')
         inertia: true,
     })
  .on('dragmove', (event) => {
+				// Prevent the default touch behavior that triggers page refresh
+        event.preventDefault();
+
         const target = event.target;
 
         // Translate the element's position
