@@ -92,33 +92,45 @@
 
 </style>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script type="text/javascript" src="https://hammerjs.github.io/dist/hammer.min.js"></script>
 <script type="module">
-interact('.person')
- .draggable({
-        modifiers: [
-            interact.modifiers.restrictRect({
-                // restriction: 'parent',
-                endOnly: true,
-            }),
-        ],
-        inertia: true,
-    })
- .on('dragmove', (event) => {
-				// Prevent the default touch behavior that triggers page refresh
-        event.preventDefault();
+var person = document.getElementById('person');
+var mc = new Hammer(person);
 
-        const target = event.target;
+// add a "PAN" recognizer to it (all directions)
+mc.add( new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 0 }) );
 
-        // Translate the element's position
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+// tie in the handler that will be called
+mc.on("pan", handleDrag);
 
-        // Update the element's position
-        target.style.transform = `translate(${x}px, ${y}px)`;
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
-    });
+var lastPosX = 0;
+var lastPosY = 0;
+var isDragging = false;
+function handleDrag(ev) {
+  
+  // for convience, let's get a reference to our object
+  var elem = ev.target;
+  
+  if ( ! isDragging ) {
+    isDragging = true;
+    lastPosX = elem.offsetLeft;
+    lastPosY = elem.offsetTop;
+  }
+  
+  var posX = ev.deltaX + lastPosX;
+  var posY = ev.deltaY + lastPosY;
+  
+  // move our element to that position
+  elem.style.left = posX + "px";
+  elem.style.top = posY + "px";
+  
+  // DRAG ENDED
+  // this is where we simply forget we are dragging
+  if (ev.isFinal) {
+    isDragging = false;
+  }
+}
+
 
 
 // .draggable({
