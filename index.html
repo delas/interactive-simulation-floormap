@@ -73,7 +73,7 @@
 }
 
 .overlayable {
-	opacity: 1;
+	opacity: 0;
 }
 .overlayable:hover {
 	opacity: 0.5;
@@ -94,8 +94,11 @@
 
 <script type="text/javascript" src="https://hammerjs.github.io/dist/hammer.min.js"></script>
 <script type="module">
-var person = document.getElementById('person');
-var mc = new Hammer(person);
+
+var caseid = 1;
+
+const dropTargets = document.querySelectorAll(".overlayable");
+var mc = new Hammer(document.getElementById('person'));
 
 // add a "PAN" recognizer to it (all directions)
 mc.add( new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 0 }) );
@@ -106,12 +109,12 @@ mc.on("pan", handleDrag);
 var lastPosX = 0;
 var lastPosY = 0;
 var isDragging = false;
+var prevRoom = null;
+
 function handleDrag(ev) {
-  
-  // for convience, let's get a reference to our object
   var elem = ev.target;
   
-  if ( ! isDragging ) {
+  if (!isDragging) {
     isDragging = true;
     lastPosX = elem.offsetLeft;
     lastPosY = elem.offsetTop;
@@ -119,94 +122,64 @@ function handleDrag(ev) {
   
   var posX = ev.deltaX + lastPosX;
   var posY = ev.deltaY + lastPosY;
+
+	dropTargets.forEach(dropTarget => {
+    const dragRect = event.target.getBoundingClientRect();
+    const dropRect = dropTarget.getBoundingClientRect();
+    
+    if (
+      posX < dropRect.right &&
+      posX > dropRect.left &&
+      posY < dropRect.bottom &&
+      posY > dropRect.top
+    ) {
+      dropTarget.style.opacity = "0.5";
+    	var room = dropTarget.dataset.room;
+    	if (room != prevRoom) {
+    		prevRoom = room;
+    		logMove(room)
+    	}
+    } else {
+    	dropTarget.style.opacity = "0";
+    }
+  });
   
-  // move our element to that position
   elem.style.left = posX + "px";
   elem.style.top = posY + "px";
   
-  // DRAG ENDED
-  // this is where we simply forget we are dragging
   if (ev.isFinal) {
     isDragging = false;
   }
 }
 
+function logMove(room) {
+	console.log("case: " + caseid + " - activity: enter " + room)
+}
 
 
-// .draggable({
-//   listeners: {
-//     dragmove (event) {
-//       // console.log(event.pageX, event.pageY)
-//       const target = event.target;
+document.getElementById("newcase").addEventListener("click", function() {
+  caseid += 1;
 
-//       // Keep the dragged position in the data-x/data-y attributes
-//       const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-//       const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-//       // Translate the element's position
-//       target.style.transform = `translate(${x}px, ${y}px)`;
-
-//       // Update the data-x/data-y attributes
-//       target.setAttribute('data-x', x);
-//       target.setAttribute('data-y', y);
-//     }
-//   }
-// })
-</script>
-
-<script type="text/javascript">
-
-// caseid = 1
-// dragging = false
-
-// function logger(room) {
-// 	console.log("case: " + caseid + " - activity: enter " + room)
-// }
-
-// function newCase() {
-// 	caseid += 1
-// }
-
-// function startDragging(event) {
-// 	dragging = true
-// }
-
-// function stopDragging(event) {
-// 	dragging = false
-// }
-
-// function move(event) {
-// 	if (dragging) {
-// 		// console.log(event)
-// 		person = document.getElementById("person");
-// 		person.style.setProperty("left", event.x + "px")
-// 		person.style.setProperty("top", event.y + "px")
-// 		// console.log(person)
-// 	}
-// }
+  var person = document.getElementById('person');
+  person.style.left = "0px";
+  person.style.top = "0px";
+});
 
 
 </script>
+
 <head>
 </head>
 <body>
 	<div class="person" id="person"></div>
-	<!-- <div class="map" onmousedown="startDragging(event)" onmouseup="stopDragging(event)" onmousemove="move(event)"> -->
 	<div class="map">
-		
-		<!-- <div onmouseover="logger('bathroom')" class="overlayable bathroom"></div>
-		<div onmouseover="logger('bedroom')" class="overlayable bedroom"></div>
-		<div onmouseover="logger('kitchen')" class="overlayable kitchen"></div>
-		<div onmouseover="logger('entrance')" class="overlayable entrance"></div>
-		<div onmouseover="logger('cabinet')" class="overlayable cabinet"></div>
-		<div onmouseover="logger('living')" class="overlayable living"></div> -->
-		<div class="overlayable bathroom"></div>
-		<div class="overlayable bedroom"></div>
-		<div class="overlayable kitchen"></div>
-		<div class="overlayable entrance"></div>
-		<div class="overlayable cabinet"></div>
-		<div class="overlayable living"></div>
+		<div data-room="bathroom" class="overlayable bathroom"></div>
+		<div data-room="bedroom" class="overlayable bedroom"></div>
+		<div data-room="kitchen" class="overlayable kitchen"></div>
+		<div data-room="entrance" class="overlayable entrance"></div>
+		<div data-room="cabinet" class="overlayable cabinet"></div>
+		<div data-room="living" class="overlayable living"></div>
 	</div>
-	<button onclick="newCase()">New day</button>
+	<button id="newcase">New day</button>
 </body>
 </html>
