@@ -2,9 +2,9 @@
 <html>
 <style type="text/css">
 .map {
-  background: url(floormap.jpg) no-repeat;
-  height: 837px;
-  width: 927px;
+  background: url(floormap2.jpg) no-repeat;
+  height: 652px;
+  width: 1472px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -13,64 +13,67 @@
 
 .bathroom {
 	position: absolute;
-	top: 30px;
-	left: 173px;
-	width: 351px;
-	height: 291px;
+	top: 20px;
+	left: 380px;
+	width: 199px;
+	height: 308px;
 	background: white;
 	opacity: 0;
 }
 
 .bedroom {
 	position: absolute;
-	top: 30px;
-	left: 527px;
-	width: 352px;
-	height: 402px;
+	top: 20px;
+	left: 20px;
+	width: 340px;
+	height: 480px;
 	background: white;
 	opacity: 0;
 }
 
 .kitchen {
 	position: absolute;
-	top: 528px;
-	left: 44px;
-	width: 311px;
-	height: 280px;
+	top: 20px;
+	left: 590px;
+	width: 380px;
+	height: 150px;
 	background: white;
 	opacity: 0;
 }
 
 .entrance {
 	position: absolute;
-	top: 320px;
-	left: 82px;
-	width: 246px;
-	height: 206px;
+	top: 70px;
+	left: 1340px;
+	width: 105px;
+	height: 100px;
 	background: white;
 	opacity: 0;
 }
 
-.computer {
+.cabinet {
 	position: absolute;
-	top: 328px;
-	left: 326px;
-	width: 170px;
-	height: 100px;
+	top: 490px;
+	left: 380px;
+	width: 460px;
+	height: 135px;
 	background: white;
 	opacity: 0;
 }
 
 .living {
 	position: absolute;
-	top: 440px;
-	left: 374px;
-	width: 383px;
-	height: 365px;
+	top: 380px;
+	left: 1000px;
+	width: 440px;
+	height: 120px;
 	background: white;
 	opacity: 0;
 }
 
+.overlayable {
+	opacity: 1;
+}
 .overlayable:hover {
 	opacity: 0.5;
 }
@@ -81,43 +84,66 @@
 	left: 0;
 	height: 50px;
 	width: 50px;
-	background: black;
+	background: red;
 	border-radius: 50%;
 	z-index: 100;
 }
 
 </style>
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script type="module">
+interact('.person').draggable({
+  listeners: {
+    move (event) {
+      // console.log(event.pageX, event.pageY)
+      const target = event.target;
+
+      // Keep the dragged position in the data-x/data-y attributes
+      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+      // Translate the element's position
+      target.style.transform = `translate(${x}px, ${y}px)`;
+
+      // Update the data-x/data-y attributes
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    }
+  }
+})
+</script>
+
 <script type="text/javascript">
 
-caseid = 1
-dragging = false
+// caseid = 1
+// dragging = false
 
-function logger(room) {
-	console.log("case: " + caseid + " - activity: enter " + room)
-}
+// function logger(room) {
+// 	console.log("case: " + caseid + " - activity: enter " + room)
+// }
 
-function newCase() {
-	caseid += 1
-}
+// function newCase() {
+// 	caseid += 1
+// }
 
-function startDragging(event) {
-	dragging = true
-}
+// function startDragging(event) {
+// 	dragging = true
+// }
 
-function stopDragging(event) {
-	dragging = false
-}
+// function stopDragging(event) {
+// 	dragging = false
+// }
 
-function move(event) {
-	if (dragging) {
-		// console.log(event)
-		person = document.getElementById("person");
-		person.style.setProperty("left", event.x + "px")
-		person.style.setProperty("top", event.y + "px")
-		// console.log(person)
-	}
-}
+// function move(event) {
+// 	if (dragging) {
+// 		// console.log(event)
+// 		person = document.getElementById("person");
+// 		person.style.setProperty("left", event.x + "px")
+// 		person.style.setProperty("top", event.y + "px")
+// 		// console.log(person)
+// 	}
+// }
 
 
 </script>
@@ -125,14 +151,21 @@ function move(event) {
 </head>
 <body>
 	<div class="person" id="person"></div>
-	<div class="map" onmousedown="startDragging(event)" onmouseup="stopDragging(event)" onmousemove="move(event)">
+	<!-- <div class="map" onmousedown="startDragging(event)" onmouseup="stopDragging(event)" onmousemove="move(event)"> -->
+	<div class="map">
 		
-		<div onmouseover="logger('bathroom')" class="overlayable bathroom"></div>
+		<!-- <div onmouseover="logger('bathroom')" class="overlayable bathroom"></div>
 		<div onmouseover="logger('bedroom')" class="overlayable bedroom"></div>
 		<div onmouseover="logger('kitchen')" class="overlayable kitchen"></div>
 		<div onmouseover="logger('entrance')" class="overlayable entrance"></div>
-		<div onmouseover="logger('computer')" class="overlayable computer"></div>
-		<div onmouseover="logger('living')" class="overlayable living"></div>
+		<div onmouseover="logger('cabinet')" class="overlayable cabinet"></div>
+		<div onmouseover="logger('living')" class="overlayable living"></div> -->
+		<div class="overlayable bathroom"></div>
+		<div class="overlayable bedroom"></div>
+		<div class="overlayable kitchen"></div>
+		<div class="overlayable entrance"></div>
+		<div class="overlayable cabinet"></div>
+		<div class="overlayable living"></div>
 	</div>
 	<button onclick="newCase()">New day</button>
 </body>
