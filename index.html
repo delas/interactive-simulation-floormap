@@ -92,7 +92,8 @@
 
 </style>
 
-<script type="text/javascript" src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="module">
 
 var caseid = 1;
@@ -154,6 +155,7 @@ function handleDrag(ev) {
 
 function logMove(room) {
 	console.log("case: " + caseid + " - activity: enter " + room)
+	axios.get("http://localhost:8000/log?room=" + room + "&caseid=" + caseid)
 }
 
 
