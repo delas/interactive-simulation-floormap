@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="interactive-simulation-logger:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/interactive_simulation_logger_jar</output-path>
+    <root id="archive" name="interactive-simulation-logger.jar">
+      <element id="module-output" name="interactive-simulation-logger" />
+    </root>
+  </artifact>
+</component>
